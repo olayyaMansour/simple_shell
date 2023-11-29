@@ -41,7 +41,7 @@ bool executeCommands(char *Cmd)
 
 		if (waitpid(procId, &exitStatus, 0) == -1)
 		{
-		perror("Err! terminating child process");
+		perror("Err! Couldn't wait for child process termination");
 		free(Cmd);
 		return (false);
 		}
