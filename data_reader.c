@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 /**
  * ReadData - reads user input from terminal
  * @Message: string to be outputed
