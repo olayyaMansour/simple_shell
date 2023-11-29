@@ -32,9 +32,8 @@ void onTrigger(void)
 
 	if (_strCompare(userInput, "exit") == false)
 		onExit();
-
-
-	free(userInput);
+	else
+		executeCommands(userInput);
 }
 /**
  * onExit - exits the session
