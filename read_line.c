@@ -19,7 +19,7 @@ char *readLine(void)
 		exit(EXIT_SUCCESS);
 	} else
 	{
-		line[_strlen(line) - 1] = '\0';
+		line[strlen(line) - 1] = '\0';
 	}
 	return (line);
 }
