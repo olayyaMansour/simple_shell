@@ -8,5 +8,6 @@
 
 void displayPrompt(void)
 {
+	if (isatty(STDIN_FILENO))
 	_puts("#cisfun$ ");
 }

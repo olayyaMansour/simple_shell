@@ -15,21 +15,22 @@ int execute(char **args)
 	if (args[0] == NULL)
 	{
 		return (1);
-	} 
+	}
 
 	pid = fork();
 
-	if (pid == 0) { 
+	if (pid == 0)
+	{
 		if (execve(args[0], args, NULL) == -1)
 		{
 			_puts("./shell: No such file or directory\n");
+			exit(EXIT_FAILURE);
 		}
-		exit(EXIT_FAILURE);
 	} else if (pid < 0)
-	{ 
+	{
 		perror("fork error");
 	} else
-	{ 
+	{
 		do {
 			wpid = waitpid(pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));

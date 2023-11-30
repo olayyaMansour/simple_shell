@@ -1,5 +1,4 @@
 #include "main.h"
-
 /**
  * readLine - reads a line from stdin using getline(),
  * handles EOF (ctrl + d) condition and removes trailing
@@ -12,15 +11,24 @@ char *readLine(void)
 	char *line = NULL;
 	size_t bufsize = 0;
 
-	if (getline(&line, &bufsize, stdin) == -1)
+	ssize_t bytesRead = getline(&line, &bufsize, stdin);
+
+	if (bytesRead == -1)
 	{
-		_puts("\n");
-		free(line);
-		exit(EXIT_SUCCESS);
-	} else
-	{
-		line[strlen(line) - 1] = '\0';
+		if (feof(stdin))
+		{
+			free(line);
+			exit(EXIT_SUCCESS);
+		} else
+		{
+			perror("getline error");
+			exit(EXIT_FAILURE);
+		}
 	}
+
+	if (bytesRead > 0 && line[bytesRead - 1] == '\n')
+		line[bytesRead - 1] = '\0';
+
 	return (line);
 }
 

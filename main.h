@@ -18,5 +18,7 @@ char *readLine(void);
 char **splitLine(char *line);
 int execute(char **args);
 
+int isatty(int fd);
+
 #endif
 
