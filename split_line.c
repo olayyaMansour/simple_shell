@@ -7,11 +7,37 @@
  */
 char **splitLine(char *line)
 {
-	char **args = malloc(2 * sizeof(char *));
+	size_t bufsize = BUFFER_SIZE;
+	size_t position = 0;
+	char **args = malloc(bufsize * sizeof(char *));
+	char *token;
 
-	args[0] = line;
-	args[1] = NULL;
+	if (!args)
+	{
+		perror("malloc error");
+		exit(EXIT_FAILURE);
+	}
 
+	token = strtok(line, " \t\n\r\a");
+	while (token != NULL)
+	{
+		args[position] = token;
+		position++;
+
+		if (position >= bufsize)
+		{
+			bufsize += BUFFER_SIZE;
+			args = realloc(args, bufsize * sizeof(char *));
+			if (!args)
+			{
+				perror("realloc error");
+				exit(EXIT_FAILURE);
+			}
+		}
+
+		token = strtok(NULL, " \t\n\r\a");
+	}
+	args[position] = NULL;
 	return (args);
 }
 
