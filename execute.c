@@ -25,8 +25,8 @@ int execute(char **args)
 		{
 			// Handle command not found
 			perror("./shell: No such file or directory\n");
+			exit(EXIT_FAILURE);
 		}
-		exit(EXIT_FAILURE);
 	} else if (pid < 0)
 	{
 		perror("fork error");
