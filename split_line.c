@@ -37,7 +37,7 @@ char **splitLine(char *line)
 
 		token = strtok(NULL, " \t\n\r\a");
 	}
+
 	args[position] = NULL;
 	return (args);
 }
-

@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
 #define BUFFER_SIZE 1024
 
 void _puts(const char *message);
