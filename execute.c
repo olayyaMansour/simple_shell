@@ -15,6 +15,9 @@ int execute(char **args)
 	(void)wpid;
 	if (args[0] == NULL)
 		return (1);
+
+	if (strcmp(args[0], "exit") == 0)
+		exit(EXIT_SUCCESS);
 	pid = fork();
 	if (pid == 0)
 	{
