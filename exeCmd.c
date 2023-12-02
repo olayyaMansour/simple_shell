@@ -1,9 +1,4 @@
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
+#include "dataHandlers.h"
 /**
  * executeCommands - execute a command using fork and execve
  * @Cmd: command to be executed
@@ -11,43 +6,48 @@
  * Return: true if command has been executed
  * successfully otherwise false
  */
-bool executeCommands(char *Cmd)
+bool executeCommands(char **Cmd, char *str)
 {
-	pid_t procId;
+	pid_t procId, waitprocId;
 
 	procId = fork();
 
 	if (procId == -1)
 	{
 		perror("Err! Couldn't fork");
-		free(Cmd);
-		return (false);
+		_freeArr(Cmd);
+		return (true);
 	}
 	else if (procId == 0)
 	{
-		char *args[] = {"/bin/sh", "-c", NULL, NULL};
-
-		args[2] = (char *)Cmd;
-
-		if (execve(args[0], args, NULL) == -1)
+		if (execve(Cmd[0], Cmd, environ) == -1)
 		{
-		perror("Err! Can't execute this command");
+		perror(str);
+		_freeArr(Cmd);
 		_exit(EXIT_FAILURE);
 		}
 	}
 	else
 	{
+		/*pid_t waitprocId;*/
 		int exitStatus;
 
-		if (waitpid(procId, &exitStatus, 0) == -1)
+		do {
+		waitprocId = waitpid(procId, &exitStatus, 0);
+		if (waitprocId == -1)
 		{
 		perror("Err! Couldn't wait for child process termination");
-		free(Cmd);
-		return (false);
+		_freeArr(Cmd);
+		return (true);
 		}
+		} while (waitprocId == 0);
 
-		free(Cmd);
-		return (exitStatus != false ? (false) : (true));
+		_freeArr(Cmd);
+		if (exitStatus)
+			write(STDERR_FILENO, "Success\n", sizeof("Success\n"));
+		else
+			write(STDERR_FILENO, "Failed\n", sizeof("Failled\n"));
+		/*return (exitStatus != false ? (false) : (true));*/
 	}
 	return (false);
 }

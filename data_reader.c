@@ -1,8 +1,5 @@
-#include "handlers.h"
-#include <unistd.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "dataHandlers.h"
+#include "core.h"
 /**
  * ReadData - reads user input from terminal
  * @Message: string to be outputed
@@ -11,14 +8,26 @@
 char *ReadData(const char *Message)
 {
 	char *Cmd = NULL;
-	unsigned long sizeOfBuffer = 0;
+	size_t sizeOfBuffer = 0;
+	ssize_t Length;
 
 	write(STDOUT_FILENO, Message, strlen(Message));
 
-	getline(&Cmd, &sizeOfBuffer, stdin);
+	Length = getline(&Cmd, &sizeOfBuffer, stdin);
 
-	if (strlen(Cmd) > 0 && Cmd[strlen(Cmd) - 1] == '\n')
-		Cmd[strlen(Cmd) - 1] = '\0';
+	if (Length > 0 && Cmd[Length -1] == '\n')
+	{
+		Cmd[Length - 1] = '\0';
+	}
+	else if (Length == -1)
+	{
+		if (isatty(STDIN_FILENO))
+		{
+		write(STDOUT_FILENO, "\n", sizeof("\n"));
+		free(Cmd);
+		onExit();
+		}
+	}
 
 	return (Cmd);
 }
