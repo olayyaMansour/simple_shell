@@ -16,6 +16,10 @@ void displayPrompt(void);
 char *readLine(void);
 char **splitLine(char *line);
 int execute(char **args);
+void executeCommand(char **args);
+int isExitCommand(char **args);
+int isEnvCommand(char **args);
+void executeEnv();
 
 int isatty(int fd);
 
