@@ -1,4 +1,4 @@
-#include "addons.h"
+#include "strLib.h"
 
 /**
  * _strCompare - compares each char of 2 strings

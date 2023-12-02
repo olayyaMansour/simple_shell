@@ -11,7 +11,7 @@
  */
 char **strParsing(char *data, char *dataContainer, char *token, char **Cmd)
 {
-	short i = 0, limiter = 1;
+	int i = 0, limiter = 1;
 
 	if (!data)
 		return (NULL);
