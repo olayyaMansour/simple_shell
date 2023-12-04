@@ -21,7 +21,7 @@ char **strParsing(char *data, char *dataContainer, char *token, char **Cmd)
 
 	Cmd = _INIT_TOKENS(&token, &limiter);
 
-	if (!Cmd)
+	if (Cmd)
 	{
 		while (token != NULL)
 		{
