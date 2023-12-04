@@ -15,7 +15,7 @@ char *ReadData(const char *Message)
 
 	Length = getline(&Cmd, &sizeOfBuffer, stdin);
 
-	if (Length > 0 && Cmd[Length -1] == '\n')
+	if (Length > 0 && Cmd[Length - 1] == '\n')
 	{
 		Cmd[Length - 1] = '\0';
 	}
