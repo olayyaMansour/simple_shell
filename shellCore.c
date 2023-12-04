@@ -12,6 +12,8 @@ void onExit(void);
 /**
  * onSession_start - starts a session
  * calls onTrigger() func in an infinte loop
+ * @argc: argument counter to be driven from main
+ * @str: string that holds name of exe shell driven from main
  */
 void onSession_start(int argc, char *str)
 {
@@ -27,6 +29,7 @@ void onSession_start(int argc, char *str)
  * uses custom built string comparison to check
  * for a specified word(string)
  * calls onExit if condition is met
+ * @str: string that holds name of exe shell driven from main
  */
 void onTrigger(char *str)
 {
@@ -41,13 +44,14 @@ void onTrigger(char *str)
 	{
 		if (_strCompare(Cmd[0], "exit") == false)
 		{
-			_freeArr(Cmd);	
+			_freeArr(Cmd);
 			onExit();
 		}
 		else
 		{
 			int log = executeCommands(Cmd, str);
-			char *Err = "Command exited!";
+			char *Err = "Command exited!\n";
+
 			if (log != -1)
 				write(STDOUT_FILENO, Err, strlen(Err));
 		}

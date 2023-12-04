@@ -2,13 +2,14 @@
 /**
  * executeCommands - execute a command using fork and execve
  * @Cmd: command to be executed
+ * @str: string to hold name of the exe shell
  * forks a new process then check for fork error
  * Return: true if command has been executed
  * successfully otherwise false
  */
 bool executeCommands(char **Cmd, char *str)
 {
-	pid_t procId, waitprocId;
+	pid_t procId;
 
 	procId = fork();
 
@@ -29,7 +30,7 @@ bool executeCommands(char **Cmd, char *str)
 	}
 	else
 	{
-		/*pid_t waitprocId;*/
+		pid_t waitprocId;
 		int exitStatus;
 
 		do {
@@ -43,11 +44,7 @@ bool executeCommands(char **Cmd, char *str)
 		} while (waitprocId == 0);
 
 		_freeArr(Cmd);
-		if (exitStatus)
-			write(STDERR_FILENO, "Success\n", sizeof("Success\n"));
-		else
-			write(STDERR_FILENO, "Failed\n", sizeof("Failled\n"));
-		/*return (exitStatus != false ? (false) : (true));*/
+		return (exitStatus != false ? (false) : (true));
 	}
 	return (false);
 }
