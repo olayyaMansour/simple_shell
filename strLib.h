@@ -6,5 +6,7 @@
 
 short _strCompare(char *, char *);
 char *_strDuplicate(char *);
+char *_strCpNConcat(char *, char *);
+char *_strChr(char *, short);
 
 #endif /* ADDONS_H */
