@@ -19,7 +19,7 @@ int execute(char **args)
 	else if (isEnvCommand(args))
 	{
 		executeEnv();
-		return 1;
+		return (1);
 	}
 
 	pid = fork();

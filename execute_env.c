@@ -1,13 +1,13 @@
 #include "main.h"
-extern char **environ;
-
 /**
  * executeEnv - execute the env command
  *
  * Return: nothing
  */
-void executeEnv()
+void executeEnv(void)
 {
+	extern char **environ;
+
 	char **env = environ;
 
 	while (*env != NULL)

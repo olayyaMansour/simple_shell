@@ -9,18 +9,18 @@ void executeCommand(char **args)
 {
 	char *path, *token;
 
-	if (args[0][0] == '/') {
+	if (args[0][0] == '/')
+	{
 		if (execve(args[0], args, NULL) == -1)
 		{
 			perror("execve error");
 			exit(EXIT_FAILURE);
 		}
-	} else {
+	} else
+	{
 		path = getenv("PATH");
-		if (path == NULL) {
+		if (path == NULL)
 			path = "/bin:/usr/bin";
-		}
-
 		token = strtok(path, ":");
 		while (token != NULL)
 		{
@@ -43,7 +43,6 @@ void executeCommand(char **args)
 			free(full_path);
 			token = strtok(NULL, ":");
 		}
-
 		_puts("./shell: No such file or directory\n");
 		exit(EXIT_FAILURE);
 	}
