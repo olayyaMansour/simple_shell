@@ -5,7 +5,7 @@
  * @secondStr: second string to copy
  * Return: full new copied and concatenated string
  */
-char *_strCpNConcat(char *firstStr, char *secondStr);
+char *_strCpNConcat(char *firstStr, char *secondStr)
 {
 	char *newStrArr = NULL;
 	short firstStrLength = strlen(firstStr) + 1;

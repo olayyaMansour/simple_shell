@@ -3,11 +3,12 @@
 
 #include "MemoHandlers.h"
 #include "dataHandlers.h"
+#include "strLib.h"
 #include <sys/stat.h>
 
 #define ST_STAT struct stat
 
-inline bool FwdSlashContainer(const char *);
+bool FwdSlashContainer(const char *);
 
 bool isValidPath(char *);
 
