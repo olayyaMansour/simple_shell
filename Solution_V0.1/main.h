@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
 #define BUFFER_SIZE 1024
 
 void _puts(const char *message);
@@ -17,6 +16,10 @@ void displayPrompt(void);
 char *readLine(void);
 char **splitLine(char *line);
 int execute(char **args);
+void executeCommand(char **args);
+int isExitCommand(char **args);
+int isEnvCommand(char **args);
+void executeEnv(void);
 
 int isatty(int fd);
 

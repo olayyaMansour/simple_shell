@@ -1,10 +1,10 @@
 #include "main.h"
 /**
- * execute - execute a command
- * @args: array of arguments
- *
- * Return: 1 if the shell should continue, 0 if it should exit
- */
+* execute - execute a command or handle built-in commands
+* @args: array of arguments
+*
+* Return: 1 if the shell should continue, 0 if it should exit
+*/
 int execute(char **args)
 {
 	pid_t pid, wpid;
@@ -12,8 +12,13 @@ int execute(char **args)
 
 	(void)wpid;
 
-	if (args[0] == NULL)
+	if (isExitCommand(args))
 	{
+		exit(EXIT_SUCCESS);
+	}
+	else if (isEnvCommand(args))
+	{
+		executeEnv();
 		return (1);
 	}
 
@@ -21,15 +26,13 @@ int execute(char **args)
 
 	if (pid == 0)
 	{
-		if (execve(args[0], args, NULL) == -1)
-		{
-			_puts("./shell: No such file or directory\n");
-			exit(EXIT_FAILURE);
-		}
-	} else if (pid < 0)
+		executeCommand(args);
+	}
+	else if (pid < 0)
 	{
 		perror("fork error");
-	} else
+	}
+	else
 	{
 		do {
 			wpid = waitpid(pid, &status, WUNTRACED);
