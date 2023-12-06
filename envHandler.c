@@ -17,7 +17,7 @@ char **envHandler(char *envName, char *envValue, char *envKey)
 
 	while (*environ != NULL)
 	{
-		temp = _strDuplicate(*environ);
+		Temp = _strDuplicate(*environ);
 		envKey = strtok(Temp, "=");
 
 		if (!(_strCompare(envKey, envName) && envKey))
