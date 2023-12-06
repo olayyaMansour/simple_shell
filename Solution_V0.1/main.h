@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <string.h>
 
+extern char **environ;
+
 #define BUFFER_SIZE 1024
 
 void _puts(const char *message);
@@ -22,6 +24,7 @@ int isEnvCommand(char **args);
 void executeEnv(void);
 
 int isatty(int fd);
+
 
 #endif
 
