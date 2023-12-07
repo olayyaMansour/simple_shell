@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void onTrigger(char *);
+void onTrigger(char *, short Counter);
 void onExit(void);
 /**
  * onSession_start - starts a session
@@ -18,9 +18,11 @@ void onExit(void);
 void onSession_start(int argc, char *str)
 {
 	(void) argc;
+	short Counter = 0;
+	
 	while (true)
 	{
-	onTrigger(str);
+	  onTrigger(str, (Counter += 1));
 	}
 }
 
@@ -31,10 +33,11 @@ void onSession_start(int argc, char *str)
  * calls onExit if condition is met
  * @str: string that holds name of exe shell driven from main
  */
-void onTrigger(char *str)
+void onTrigger(char *str, short Counter)
 {
 	char *userInput = ReadData("$ ");
 	char **Cmd = NULL;
+	int log = 0;
 
 	if (userInput == NULL)
 		return;
@@ -49,11 +52,11 @@ void onTrigger(char *str)
 		}
 		else
 		{
-			int log = executeCommands(Cmd, str);
-			char *Err = "Command exited!\n";
+		  log = executeCommands(Cmd, str, Counter);
+		  /*	char *Err = "Command exited!\n";
 
 			if (log != -1)
-				write(STDOUT_FILENO, Err, strlen(Err));
+			write(STDOUT_FILENO, Err, strlen(Err));*/
 		}
 	}
 }

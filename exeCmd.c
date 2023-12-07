@@ -1,4 +1,5 @@
 #include "dataHandlers.h"
+#include "pathLib.h"
 /**
  * executeCommands - execute a command using fork and execve
  * @Cmd: command to be executed
@@ -7,12 +8,22 @@
  * Return: true if command has been executed
  * successfully otherwise false
  */
-bool executeCommands(char **Cmd, char *str)
+bool executeCommands(char **Cmd, char *str, short Counter)
 {
 	pid_t procId;
+	char *cmdPath = NULL;
+	
+	cmdPath = (char *)pathHandler(Cmd[0], NULL, NULL);
+	
+	if (!cmdPath)
+	{
+	  _perror(str, Cmd[0], Counter, ": Not found\n");
+	  _freeArr(Cmd);
+	  return (true);
+	}
 
 	procId = fork();
-
+	
 	if (procId == -1)
 	{
 		perror("Err! Couldn't fork");
@@ -21,11 +32,12 @@ bool executeCommands(char **Cmd, char *str)
 	}
 	else if (procId == 0)
 	{
-		if (execve(Cmd[0], Cmd, environ) == -1)
+		if (execve(cmdPath, Cmd, environ) == -1)
 		{
-		perror(str);
+		 perror(str);
+		_freeMemo(cmdPath, NULL);
 		_freeArr(Cmd);
-		_exit(EXIT_FAILURE);
+        	_exit(EXIT_FAILURE);
 		}
 	}
 	else
@@ -38,11 +50,13 @@ bool executeCommands(char **Cmd, char *str)
 		if (waitprocId == -1)
 		{
 		perror("Err! Couldn't wait for child process termination");
+		_freeMemo(cmdPath, NULL);
 		_freeArr(Cmd);
 		return (true);
 		}
 		} while (waitprocId == 0);
 
+		_freeMemo(cmdPath, NULL);
 		_freeArr(Cmd);
 		return (exitStatus != false ? (false) : (true));
 	}

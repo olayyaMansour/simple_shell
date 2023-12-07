@@ -11,39 +11,66 @@
  * pointer to the valid exe path
  * or NULL if not found
  */
-char **pathFinder(char *env, char *Cmd, char *Path, char **originalPath)
+
+char *pathHandler(char *Cmd, char* Path, char *orignalPath)
 {
-	char *Direc = NULL;
-	ST_STAT st;
+  char *envValue = envHandler("PATH", NULL, NULL);
 
-	if (_strChr(Cmd, 47) != NULL)
-	{
-		if (stat(Cmd, &st) == 0)
-			return ((char **)_strDuplicate(Cmd));
-	}
-	else
-	{
-	Path = (char *)envHandler(env, NULL, NULL);
+    if (!envValue)
+        return NULL;
 
-	if (Path == NULL || Cmd == NULL)
-		return (NULL);
+    // Check if Cmd already contains a '/'
+    if (FwdSlashContainer(Cmd))
+    {
+        if (isValidPath(Cmd))
+	  _freeMemo(envValue, NULL);
+	return (_strDuplicate(Cmd));
 
-	Direc = strtok(Path, ":");
+	
+        return NULL;
+    }
+    else
+    {
+        char *Direc = strtok(envValue, ":");
 
-	while (Direc != NULL)
-	{
-		originalPath = (char **)_strCpNConcat(Direc, Cmd);
+        while (Direc != NULL)
+        {
+            orignalPath = _strCpNConcat(Direc, Cmd);
+            if (isValidPath(orignalPath))
+            {
+	      _freeMemo(envValue, NULL);
+	      return (orignalPath);
+            }
+            _freeMemo(orignalPath, NULL);
+            Direc = strtok(NULL, ":");
+        }
+    }
 
-		if (stat((char *)originalPath, &st) == 0)
-		{
-		_freeMemo(Path, NULL);
-		return (originalPath);
-		}
-		_freeMemo((char *)originalPath, NULL);
-		Direc = strtok(NULL, ":");
-	}
-	}
-
-	_freeMemo(Path, NULL);
-	return (NULL);
+    _freeMemo(envValue, NULL);
+    return (NULL);
 }
+
+/*
+int main(int argc, char *argv[])
+{
+    if (argc < 2)
+    {
+        printf("Usage: %s <executable>\n", argv[0]);
+        return 1;
+    }
+
+    char *Cmd = (char *)pathFinder("PATH", argv[1], NULL, NULL);
+
+    if (Cmd != NULL)
+    {
+        printf("Executable path: %s\n", Cmd);
+        free(Cmd);
+    }
+    else
+    {
+        printf("Executable not found in PATH\n");
+    }
+
+    return 0;
+}
+*/

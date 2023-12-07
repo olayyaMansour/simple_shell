@@ -11,10 +11,11 @@
  * Or
  * NULL if not found
  */
-char *envHandler(char *envName, char *envValue, char *envKey)
+char **envV(char *envName)
 {
 	char *Temp = NULL;
-
+	char *envValue, *envKey;
+	
 	while (*environ != NULL)
 	{
 		Temp = _strDuplicate(*environ);
@@ -24,7 +25,7 @@ char *envHandler(char *envName, char *envValue, char *envKey)
 		{
 		envValue = _strDuplicate(strtok(NULL, "\n"));
 		_freeMemo(Temp, NULL);
-		return (envValue);
+		return ((char **)envValue);
 		}
 
 	_freeMemo(Temp, NULL);

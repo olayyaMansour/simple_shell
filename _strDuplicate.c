@@ -27,15 +27,15 @@ char *_strDuplicate(char *str)
 	{
 	unsigned short i = 0, Length = (strlen(str));
 
-	CopiedStr = malloc(Length + 1);
+	CopiedStr = (char *)malloc(Length + 1);
 
 	if (CopiedStr == NULL)
 		return (NULL);
 
-	for (i = 0; i <= Length; i++)
+	for (i = 0; i <= (Length - 1); i++)
 		CopiedStr[i] = str[i];
 
-	CopiedStr[Length + 1] = '\0';
+	CopiedStr[Length] = '\0';
 	}
 
 	return (CopiedStr);
