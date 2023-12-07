@@ -19,19 +19,19 @@ void onSession_start(int argc, char *str)
 {
 	(void) argc;
 	short Counter = 0;
-	
+
 	while (true)
 	{
-	  onTrigger(str, (Counter += 1));
+	onTrigger(str, (Counter += 1));
 	}
 }
-
 /**
  * onTrigger - trigger the user input to read from
  * uses custom built string comparison to check
  * for a specified word(string)
  * calls onExit if condition is met
  * @str: string that holds name of exe shell driven from main
+ * @Counter: counts entered commands
  */
 void onTrigger(char *str, short Counter)
 {
@@ -53,10 +53,6 @@ void onTrigger(char *str, short Counter)
 		else
 		{
 		  log = executeCommands(Cmd, str, Counter);
-		  /*	char *Err = "Command exited!\n";
-
-			if (log != -1)
-			write(STDOUT_FILENO, Err, strlen(Err));*/
 		}
 	}
 }
