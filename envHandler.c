@@ -11,7 +11,7 @@
  * Or
  * NULL if not found
  */
-char **envHandler(char *envName, char *envValue, char *envKey)
+char *envHandler(char *envName, char *envValue, char *envKey)
 {
 	char *Temp = NULL;
 
@@ -24,7 +24,7 @@ char **envHandler(char *envName, char *envValue, char *envKey)
 		{
 		envValue = _strDuplicate(strtok(NULL, "\n"));
 		_freeMemo(Temp, NULL);
-		return ((char **)envValue);
+		return (envValue);
 		}
 
 	_freeMemo(Temp, NULL);

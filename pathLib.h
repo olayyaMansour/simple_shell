@@ -10,8 +10,12 @@
 
 bool FwdSlashContainer(const char *);
 
-bool isValidPath(char *);
+bool isValidPath(const char *);
 
-char **envHandler(char *, char *, char *);
+char *envHandler(char *, char *, char *);
+
+char *pathHandler(char *, char *, char *);
+
+void _perror(char *, char *, short, const char *);
 
 #endif /* PATH_LIB */

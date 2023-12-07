@@ -14,7 +14,7 @@
 extern char **environ;
 
 char *ReadData(const char *);
-bool executeCommands(char **, char *);
+bool executeCommands(char **, char *, short);
 char **strParsing(char *, char *, char *, char **);
 
 #endif /* HANDLERS_H */

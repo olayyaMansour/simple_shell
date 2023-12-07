@@ -12,7 +12,7 @@ char *_strCpNConcat(char *firstStr, char *secondStr)
 	short secondStrLength = strlen(secondStr) + 1;
 	short i = 0, j = 0;
 
-	if (firstStr == NULL || seccondStr == NULL)
+	if (firstStr == NULL || secondStr == NULL)
 		return (NULL);
 
 	newStrArr = (char *)malloc(firstStrLength + secondStrLength);
