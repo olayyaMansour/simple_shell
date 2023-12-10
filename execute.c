@@ -14,7 +14,7 @@ int execute(char **args)
 
 	if (isExitCommand(args))
 	{
-		exit(EXIT_SUCCESS);
+		executeExit(args);
 	}
 	else if (isEnvCommand(args))
 	{
