@@ -8,8 +8,8 @@
 char *custom_getline(void)
 {
 	static char buffer[BUFFER_SIZE];
-	static size_t buffer_index = 0;
-	static ssize_t bytes_read = 0;
+	static size_t buffer_index;
+	static ssize_t bytes_read;
 
 	size_t line_size = 0;
 	char *line = NULL;
@@ -23,11 +23,10 @@ char *custom_getline(void)
 			{
 				if (line != NULL)
 					free(line);
-				return NULL;
+				return (NULL);
 			}
 			buffer_index = 0;
 		}
-
 		while ((ssize_t)buffer_index < bytes_read && buffer[buffer_index] != '\n')
 		{
 			line_size++;
@@ -40,14 +39,12 @@ char *custom_getline(void)
 				exit(EXIT_FAILURE);
 			}
 		}
-
 		memcpy(line + line_size - buffer_index, buffer, buffer_index);
-
 		if ((ssize_t)buffer_index < bytes_read && buffer[buffer_index] == '\n')
 		{
 			line[line_size] = '\0';
 			buffer_index++;
-			return line;
+			return (line);
 		}
 	}
 }
