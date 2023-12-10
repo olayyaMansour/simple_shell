@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 	{
 		do {
 			displayPrompt();
-			line = readLine();
+			line = custom_getline();
 			args = splitLine(line);
 			status = execute(args);
 

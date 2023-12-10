@@ -15,7 +15,6 @@ extern char **environ;
 
 void _puts(const char *message);
 void displayPrompt(void);
-char *readLine(void);
 char **splitLine(char *line);
 int execute(char **args);
 void executeCommand(char **args);
@@ -25,6 +24,6 @@ void executeEnv(void);
 
 int isatty(int fd);
 
-
+char *custom_getline(void);
 #endif
 
