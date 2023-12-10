@@ -2,48 +2,48 @@
 #include "pathLib.h"
 #include "strLib.h"
 /**
- * pathFinder - finds path of the specified command to be executed
- * @Path: env var name
+ * pathHandler - finds path of the specified command to be executed
+ * @Path: path env var (Unused because of code refactored)
  * @Cmd: name of exeCommand to search for
- * @env: path env var
  * @originalPath: pointer to store the valid exe path
  * Return:
  * pointer to the valid exe path
  * or NULL if not found
  */
-char **pathFinder(char *env, char *Cmd, char *Path, char **originalPath)
-{
-	char *Direc = NULL;
-	ST_STAT st;
 
-	if (_strChr(Cmd, 47) != NULL)
+char *pathHandler(char *Cmd, char *Path, char *originalPath)
+{
+	char *envValue = envHandler("PATH", NULL, NULL);
+
+	if (!envValue)
+		return (NULL);
+
+	if (FwdSlashContainer(Cmd))
 	{
-		if (stat(Cmd, &st) == 0)
-			return ((char **)_strDuplicate(Cmd));
+		if (isValidPath(Cmd))
+		{
+		_freeMemo(envValue, NULL);
+		return (_strDuplicate(Cmd));
+		}
+	return (NULL);
 	}
 	else
 	{
-	Path = (char *)envHandler(env, NULL, NULL);
-
-	if (Path == NULL || Cmd == NULL)
-		return (NULL);
-
-	Direc = strtok(Path, ":");
+	char *Direc = strtok(envValue, ":");
 
 	while (Direc != NULL)
 	{
-		originalPath = (char **)_strCpNConcat(Direc, Cmd);
-
-		if (stat((char *)originalPath, &st) == 0)
-		{
-		_freeMemo(Path, NULL);
-		return (originalPath);
-		}
-		_freeMemo((char *)originalPath, NULL);
-		Direc = strtok(NULL, ":");
+	originalPath = _strCpNConcat(Direc, Cmd);
+	if (isValidPath(originalPath))
+	{
+	_freeMemo(envValue, NULL);
+	return (originalPath);
+	}
+	_freeMemo(originalPath, NULL);
+	Direc = strtok(NULL, ":");
 	}
 	}
 
-	_freeMemo(Path, NULL);
+	_freeMemo(envValue, NULL);
 	return (NULL);
 }
