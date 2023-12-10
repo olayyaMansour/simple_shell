@@ -25,6 +25,11 @@ void executeEnv(void);
 
 int isatty(int fd);
 
+<<<<<<< HEAD
+=======
+char *custom_getline(void);
+void executeExit(char** args);
+>>>>>>> OM
 
 #endif
 
