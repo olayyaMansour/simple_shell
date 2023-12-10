@@ -5,7 +5,7 @@
  *
  * Return: nothing
  */
-void executeExit(char** args)
+void executeExit(char **args)
 {
 	int status = EXIT_SUCCESS;
 
