@@ -9,6 +9,10 @@ void executeCommand(char **args)
 {
 	char *path, *token;
 
+	if (args == NULL || args[0] == NULL)
+		return;
+
+
 	if (args[0][0] == '/')
 	{
 		if (execve(args[0], args, NULL) == -1)

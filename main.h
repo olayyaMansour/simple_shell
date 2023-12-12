@@ -24,7 +24,7 @@ void executeEnv(void);
 
 int isatty(int fd);
 
-char *custom_getline(void);
+char *readLine(void);
 void executeExit(char** args);
 
 #endif
