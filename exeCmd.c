@@ -14,7 +14,7 @@ short waitForChildProc(pid_t, char *, char **);
  */
 bool executeCommands(char **Cmd, char *str, short Counter)
 {
-	pid_t procId, waitprocId;
+	pid_t procId;
 	char *cmdPath = NULL;
 
 	cmdPath = (char *)pathHandler(Cmd[0], NULL, NULL);
@@ -26,7 +26,7 @@ bool executeCommands(char **Cmd, char *str, short Counter)
 	return (true);
 	}
 
-	procId = fork();
+	procId = fork();	
 
 	if (procId == -1)
 	{
@@ -47,7 +47,6 @@ bool executeCommands(char **Cmd, char *str, short Counter)
 	}
 	return (false);
 }
-
 /**
  * exeChildProcess - executes child process using execve
  * @cmdPath: path to exe command

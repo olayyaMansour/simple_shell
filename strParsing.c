@@ -40,8 +40,9 @@ char **strParsing(char *data, char *dataContainer, char *token, char **Cmd)
 	return (NULL);
 	}
 
+	Cmd[i] = NULL;
 	_freeMemo(dataContainer, data);
-	Cmd[i] = '\0';
+	
 
 	return (Cmd);
 }

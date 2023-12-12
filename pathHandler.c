@@ -13,7 +13,10 @@
 
 char *pathHandler(char *Cmd, char *Path, char *originalPath)
 {
-	char *envValue = envHandler("PATH", NULL, NULL);
+	char *envValue = NULL;
+	(void) Path;
+
+	envValue = envHandler("PATH", NULL, NULL);
 
 	if (!envValue)
 		return (NULL);
