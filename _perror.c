@@ -12,9 +12,9 @@
  */
 void _perror(char *Name, char *Cmd, short posIndex, const char *Msg)
 {
-	char pos[10];
+	char pos[99];
 	const char *str = ": ";
-	int tempIndex = posIndex;
+	int tempIndex = posIndex, i = 0;
 	unsigned short count = 0, Length = strlen(str);
 
 	while (tempIndex != 0)
@@ -30,7 +30,7 @@ void _perror(char *Name, char *Cmd, short posIndex, const char *Msg)
 	}
 
 
-	for (int i = count - 1; i >= 0; i--)
+	for (i = count - 1; i >= 0; i--)
 	{
 	pos[i] = '0' + posIndex % 10;
 	posIndex /= 10;

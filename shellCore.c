@@ -1,5 +1,4 @@
 #include "dataHandlers.h"
-#include "MemoHandlers.h"
 #include "strLib.h"
 #include "core.h"
 #include <stdbool.h>
@@ -8,7 +7,7 @@
 #include <string.h>
 
 void onTrigger(char *, short Counter);
-void onExit(void);
+void onExit(char **, short);
 /**
  * onSession_start - starts a session
  * calls onTrigger() func in an infinte loop
@@ -17,8 +16,8 @@ void onExit(void);
  */
 void onSession_start(int argc, char *str)
 {
-	(void) argc;
 	short Counter = 0;
+	(void) argc;
 
 	while (true)
 	{
@@ -37,7 +36,7 @@ void onTrigger(char *str, short Counter)
 {
 	char *userInput = ReadData("$ ");
 	char **Cmd = NULL;
-	int log = 0;
+	short log = 0;
 
 	if (userInput == NULL)
 		return;
@@ -45,21 +44,24 @@ void onTrigger(char *str, short Counter)
 	Cmd = strParsing(userInput, NULL, NULL, NULL);
 	if (Cmd && Cmd[0])
 	{
-		if (_strCompare(Cmd[0], "exit") == false)
+		char exitFunc = _strCompare(Cmd[0], "exit");
+		char envFunc = _strCompare(Cmd[0], "env");
+
+		if (exitFunc == false || envFunc == false)
 		{
-			_freeArr(Cmd);
-			onExit();
+		builtInHandler(Cmd, log);
 		}
 		else
 		{
-		  log = executeCommands(Cmd, str, Counter);
+		log = executeCommands(Cmd, str, Counter);
 		}
 	}
 }
 /**
  * onExit - exits the session
  */
-void onExit(void)
+void onExit(char **Cmd, short log)
 {
-	exit(EXIT_SUCCESS);
+	(void)Cmd;
+	exit(log);
 }

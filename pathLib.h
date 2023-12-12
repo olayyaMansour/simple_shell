@@ -18,4 +18,8 @@ char *pathHandler(char *, char *, char *);
 
 void _perror(char *, char *, short, const char *);
 
+void builtInHandler(char **Cmd, short log);
+
+void pEnv(char **Cmd, short log);
+
 #endif /* PATH_LIB */

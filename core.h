@@ -3,6 +3,6 @@
 
 void onTrigger(char *, short);
 void onSession_start(int, char *);
-void onExit();
+void onExit(char **, short);
 
 #endif /* CORE_H */
