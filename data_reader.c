@@ -25,18 +25,19 @@ char *ReadData(const char *Message)
 	}
 	else if (Length == -1)
 	{
-	if (isatty(STDIN_FILENO))
-	{
-	write(STDOUT_FILENO, "\n", 1);
-	_freeMemo(Cmd, NULL);
-	onExit(NULL, log);
-	}
-	else
-	{
-	_freeMemo(Cmd, NULL);
-	onExit(NULL, log);
-	}
+		if (isatty(STDIN_FILENO))
+		{
+		write(STDOUT_FILENO, "\n", 1);
+		free(Cmd);
+		onExit(NULL, log);
+		}
+		else
+		{
+		free(Cmd);
+		onExit(NULL, log);
+		}
 	}
 
 	return Cmd;
 }
+
