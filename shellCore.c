@@ -41,6 +41,8 @@ void onTrigger(char *str, short Counter)
 	if (userInput == NULL)
 		return;
 
+	newlineOrSpaceHandler(&userInput);
+
 	Cmd = strParsing(userInput, NULL, NULL, NULL);
 	if (Cmd && Cmd[0])
 	{
