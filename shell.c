@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
 	char *line;
 	char **args;
 	int status;
+	size_t j;
 
 	if (argc > 1)
 	{
@@ -23,6 +24,10 @@ int main(int argc, char *argv[])
 			args = splitLine(line);
 			status = execute(args);
 
+			for (j = 0; args[j] != NULL; j++)
+			{
+				free(args[i]);
+			}
 			free(args);
 		}
 	}
