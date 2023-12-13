@@ -9,6 +9,8 @@
 void onTrigger(char *, short Counter);
 void onExit(char **, short);
 void replaceVariables(char **Cmd, int exitStatus);
+void setEnvHandler(char **Cmd, short log);
+void unsetEnvHandler(char **Cmd, short log);
 /**
  * onSession_start - starts a session
  * calls onTrigger() func in an infinte loop
@@ -54,6 +56,14 @@ void onTrigger(char *str, short Counter)
 		if (exitFunc == false || envFunc == false)
 		{
 		builtInHandler(Cmd, log);
+		}
+		else if (_strCompare(Cmd[0], "setenv") == 0)
+		{
+			setEnvHandler(Cmd, log);
+		}
+		else if (_strCompare(Cmd[0], "unsetenv") == 0)
+		{
+			unsetEnvHandler(Cmd, log);
 		}
 		else
 		{
