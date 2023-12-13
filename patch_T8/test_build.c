@@ -78,41 +78,39 @@ int main(int argc, char **argv)
   return (0);
 }
 
-char *ReadData(const char *Message)
-{
-  char *Cmd = NULL;
-  size_t sizeOfBuffer = 0;
-  ssize_t Length;
-  int log = 0;
+char *ReadData(const char *Message) {
+    char *Cmd = NULL;
+    size_t sizeOfBuffer = 0;
+    ssize_t Length;
+    int log = 0;
 
-  if (isatty(STDIN_FILENO))
-  {
-    write(STDOUT_FILENO, Message, strlen(Message));
-  }
-
-  Length = getline(&Cmd, &sizeOfBuffer, stdin);
-
-  if (Length > 0 && Cmd[Length - 1] == '\n')
-  {
-    Cmd[Length - 1] = '\0';
-  }
-  else if (Length == -1)
-  {
-    if (isatty(STDIN_FILENO))
-    {
-      write(STDOUT_FILENO, "\n", 1);
-      free(Cmd);
-      onExit(NULL, log);
+    if (isatty(STDIN_FILENO)) {
+        write(STDOUT_FILENO, Message, strlen(Message));
     }
-    else
-    {
-      free(Cmd);
-      onExit(NULL, log);
-    }
-  }
 
-  return (Cmd);
+    Length = getline(&Cmd, &sizeOfBuffer, stdin);
+
+    if (Length > 0) {
+        char *commentPos = strchr(Cmd, '#');
+        if (commentPos != NULL) {
+            *commentPos = '\0';
+            Length = commentPos - Cmd;
+        }
+
+        if (Cmd[Length - 1] == '\n') {
+            Cmd[Length - 1] = '\0';
+        }
+    } else if (Length == -1) {
+        if (isatty(STDIN_FILENO)) {
+            write(STDOUT_FILENO, "\n", 1);
+        }
+        free(Cmd);
+        onExit(NULL, log);
+    }
+
+    return Cmd;
 }
+
 
 char **strParsing(char *data, char *dataContainer, char *token, char **Cmd)
 {
@@ -550,8 +548,8 @@ void builtInHandler(char **Cmd, short log)
     return;
 
   if (_strCompare(Cmd[0], "exit") == 0)
+  /*add a check for the presence of a second argument after exit, if it is there, then exit with the status of this argument, otherwise exit with the status of the last command*/
   {
-/*adde a check for the presence of a second argument after exit, if it is there,then exit with the status of this argument, otherwise exit with the status of the last command*/
     if (Cmd[1] != NULL)
     {
       int exitStatus = atoi(Cmd[1]);
@@ -569,47 +567,7 @@ void builtInHandler(char **Cmd, short log)
     _freeArr(Cmd);
     pEnv(Cmd, log);
   }
-  else if (_strCompare(Cmd[0], "setenv") == 0)
-    {
-        if (Cmd[1] != NULL && Cmd[2] != NULL && Cmd[3] == NULL)
-        {
-            if (setenv(Cmd[1], Cmd[2], 1) != 0)
-            {
-                perror("setenv error");
-            }
-        }
-        else
-        {
-            fprintf(stderr, "Usage: setenv VARIABLE VALUE\n");
-        }
-        _freeArr(Cmd);
-    }
-    else if (_strCompare(Cmd[0], "unsetenv") == 0)
-    {
-        if (Cmd[1] != NULL && Cmd[2] == NULL)
-        {
-            if (unsetenv(Cmd[1]) != 0)
-            {
-                perror("unsetenv error");
-            }
-        }
-        else
-        {
-            fprintf(stderr, "Usage: unsetenv VARIABLE\n");
-        }
-        _freeArr(Cmd);
-    }
-    else if (_strCompare(Cmd[0], "cd") == 0)
-    {
-        changeDirecHandler(Cmd, Cmd[1], "my_shell", 1);
-        _freeArr(Cmd);
-    }
-    else
-    {
-        log = executeCommands(Cmd, "my_shell", 1);
-    }
 }
-
 
 void pEnv(char **Cmd, short log)
 {
@@ -695,3 +653,4 @@ char *handleOldDirec()
 {
   return (getcwd(NULL, 0));
 }
+
