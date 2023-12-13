@@ -13,8 +13,17 @@ void builtInHandler(char **Cmd, short log)
 
 	if (_strCompare(Cmd[0], "exit") == 0)
 	{
-	_freeArr(Cmd);
-	exit(log);
+		if (Cmd[1] != NULL)
+		{
+			int exitStatus = atoi(Cmd[1]);
+			_freeArr(Cmd);
+			exit(exitStatus);
+		}
+		else
+		{
+			_freeArr(Cmd);
+			exit(log);
+		}
 	}
 	else if (_strCompare(Cmd[0], "env") == 0)
 	{
