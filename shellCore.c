@@ -28,7 +28,12 @@ void onSession_start(int argc, char *str)
  * onTrigger - trigger the user input to read from
  * uses custom built string comparison to check
  * for a specified word(string)
- * calls onExit if condition is met
+ * calls strParsing()
+ * calls onExit() if condition is met
+ * calls builInHandler() if condition is met
+ * calls executeCommands() if condition is met
+ * calls newlineOrSpaceHandler() if condition is met
+ * calls changeDirecHandler() if condition is met
  * @str: string that holds name of exe shell driven from main
  * @Counter: counts entered commands
  */
@@ -48,10 +53,16 @@ void onTrigger(char *str, short Counter)
 	{
 		char exitFunc = _strCompare(Cmd[0], "exit");
 		char envFunc = _strCompare(Cmd[0], "env");
+		char cdFunc = _strCompare(Cmd[0], "cd");
 
 		if (exitFunc == false || envFunc == false)
 		{
 		builtInHandler(Cmd, log);
+		}
+		else if (cdFunc == false)
+		{
+		changeDirecHandler(Cmd, Cmd[1], str, Counter);
+		_freeArr(Cmd);
 		}
 		else
 		{
