@@ -17,5 +17,6 @@ extern char **environ;
 char *ReadData(const char *);
 bool executeCommands(char **, char *, short);
 char **strParsing(char *, char *, char *, char **);
+void changeDirecHandler(char **, char *, char *, short);
 
 #endif /* HANDLERS_H */
