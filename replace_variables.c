@@ -18,6 +18,7 @@ void replaceVariables(char **Cmd, int exitStatus)
 			if (strcmp(Cmd[i], "$?") == 0)
 			{
 				char exitStatusStr[12];
+
 				snprintf(exitStatusStr, sizeof(exitStatusStr), "%d", exitStatus);
 				free(Cmd[i]);
 				Cmd[i] = _strDuplicate(exitStatusStr);
@@ -25,6 +26,7 @@ void replaceVariables(char **Cmd, int exitStatus)
 			else if (strcmp(Cmd[i], "$$") == 0)
 			{
 				char pidStr[12];
+
 				snprintf(pidStr, sizeof(pidStr), "%d", getpid());
 				free(Cmd[i]);
 				Cmd[i] = _strDuplicate(pidStr);
@@ -32,6 +34,7 @@ void replaceVariables(char **Cmd, int exitStatus)
 			else
 			{
 				char *envValue = getenv(Cmd[i] + 1);
+
 				if (envValue != NULL)
 				{
 					free(Cmd[i]);
