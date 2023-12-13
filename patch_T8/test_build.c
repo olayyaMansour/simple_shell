@@ -693,16 +693,29 @@ char *handleOldDirec()
 
 void handleSetenv(char **Cmd)
 {
+	char *envVar, *envEntry;
   if (Cmd[1] == NULL || Cmd[2] == NULL || Cmd[3] != NULL)
   {
     write(STDERR_FILENO, "Usage: setenv VARIABLE VALUE\n", 29);
     return;
   }
 
+  envVar = envHandler(Cmd[1], NULL, NULL);
+  
+  if (envVar != NULL)
+  {
+	  envEntry = _strCpNConcat(Cmd[1], Cmd[2]);
+
+	  putenv(envEntry);
+	  _freeMemo(envEntry, envVar);
+  }
+  else {
+
   if (setenv(Cmd[1], Cmd[2], 1) != 0)
   {
     perror("setenv");
   }
+}
 }
 
 
