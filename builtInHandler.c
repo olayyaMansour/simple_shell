@@ -16,6 +16,7 @@ void builtInHandler(char **Cmd, short log)
 		if (Cmd[1] != NULL)
 		{
 			int exitStatus = atoi(Cmd[1]);
+
 			_freeArr(Cmd);
 			exit(exitStatus);
 		}
