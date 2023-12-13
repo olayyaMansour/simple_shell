@@ -19,24 +19,24 @@ char *ReadData(const char *Message)
 
 	Length = getline(&Cmd, &sizeOfBuffer, stdin);
 
-	if (Length > 0)
-{
+	if (Length > 0) {
 	char *commentPos = strchr(Cmd, '#');
-	if (commentPos != NULL)
-	{
+	if (commentPos != NULL) {
 		*commentPos = '\0';
 		Length = commentPos - Cmd;
 	}
 
-	if (Cmd[Length - 1] == '\n')
-	{
+	if (strstr(Cmd, "$$") != NULL) {
+		fprintf(stderr, "%d\n", getpid());
+		free(Cmd);
+		return NULL;
+	}
+
+	if (Cmd[Length - 1] == '\n') {
 		Cmd[Length - 1] = '\0';
 	}
-}
-	else if (Length == -1)
-{
-	if (isatty(STDIN_FILENO))
-	{
+	} else if (Length == -1) {
+	if (isatty(STDIN_FILENO)) {
 		write(STDOUT_FILENO, "\n", 1);
 	}
 	free(Cmd);
@@ -45,5 +45,4 @@ char *ReadData(const char *Message)
 
 	return Cmd;
 }
-
 
