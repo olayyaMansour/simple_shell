@@ -8,6 +8,7 @@
 
 void onTrigger(char *, short Counter);
 void onExit(char **, short);
+void replaceVariables(char **Cmd, int exitStatus);
 /**
  * onSession_start - starts a session
  * calls onTrigger() func in an infinte loop
@@ -49,6 +50,7 @@ void onTrigger(char *str, short Counter)
 		char exitFunc = _strCompare(Cmd[0], "exit");
 		char envFunc = _strCompare(Cmd[0], "env");
 
+		replaceVariables(Cmd, log);
 		if (exitFunc == false || envFunc == false)
 		{
 		builtInHandler(Cmd, log);
