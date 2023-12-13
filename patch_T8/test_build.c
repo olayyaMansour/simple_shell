@@ -70,10 +70,6 @@ char *handleNewDirec(char **, char *, char *, short);
 
 char *handleOldDirec();
 
-void handleSetenv(char **Cmd);
-
-void handleUnsetenv(char **Cmd);
-
 void changeDirecHandler(char **Cmd, char *direc, char *str, short Counter);
 
 int main(int argc, char **argv)
@@ -134,18 +130,6 @@ char **strParsing(char *data, char *dataContainer, char *token, char **Cmd)
   {
     while (token != NULL)
     {
-	    if (_strCompare(token, "setenv") == 0)
-            {
-                handleSetenv(Cmd);
-                _freeArr(Cmd);
-                return NULL;
-            }
-            else if (_strCompare(token, "unsetenv") == 0)
-            {
-                handleUnsetenv(Cmd);
-                _freeArr(Cmd);
-                return NULL;
-            }
       Cmd = parseToken(Cmd, &i, &limiter, token);
       if (!Cmd)
       {
@@ -324,8 +308,6 @@ void onTrigger(char *str, short Counter)
     char exitFunc = _strCompare(Cmd[0], "exit");
     char envFunc = _strCompare(Cmd[0], "env");
     char cdFunc = _strCompare(Cmd[0], "cd");
-    char setenvFunc = _strCompare(Cmd[0], "setenv");
-    char unsetenvFunc = _strCompare(Cmd[0], "unsetenv");
 
     if (exitFunc == false || envFunc == false)
     {
@@ -334,15 +316,6 @@ void onTrigger(char *str, short Counter)
     else if (cdFunc == false)
     {
       changeDirecHandler(Cmd, Cmd[1], str, Counter);
-      _freeArr(Cmd);
-    }
-    else if (setenvFunc == false || unsetenvFunc == false)
-    {
-      if (setenvFunc == false)
-        handleSetenv(Cmd);
-      else
-        handleUnsetenv(Cmd);
-
       _freeArr(Cmd);
     }
     else
@@ -578,6 +551,7 @@ void builtInHandler(char **Cmd, short log)
 
   if (_strCompare(Cmd[0], "exit") == 0)
   {
+/*adde a check for the presence of a second argument after exit, if it is there,then exit with the status of this argument, otherwise exit with the status of the last command*/
     if (Cmd[1] != NULL)
     {
       int exitStatus = atoi(Cmd[1]);
@@ -596,14 +570,46 @@ void builtInHandler(char **Cmd, short log)
     pEnv(Cmd, log);
   }
   else if (_strCompare(Cmd[0], "setenv") == 0)
-  {
-    handleSetenv(Cmd);
-  }
-  else if (_strCompare(Cmd[0], "unsetenv") == 0)
-  {
-    handleUnsetenv(Cmd);
-  }
+    {
+        if (Cmd[1] != NULL && Cmd[2] != NULL && Cmd[3] == NULL)
+        {
+            if (setenv(Cmd[1], Cmd[2], 1) != 0)
+            {
+                perror("setenv error");
+            }
+        }
+        else
+        {
+            fprintf(stderr, "Usage: setenv VARIABLE VALUE\n");
+        }
+        _freeArr(Cmd);
+    }
+    else if (_strCompare(Cmd[0], "unsetenv") == 0)
+    {
+        if (Cmd[1] != NULL && Cmd[2] == NULL)
+        {
+            if (unsetenv(Cmd[1]) != 0)
+            {
+                perror("unsetenv error");
+            }
+        }
+        else
+        {
+            fprintf(stderr, "Usage: unsetenv VARIABLE\n");
+        }
+        _freeArr(Cmd);
+    }
+    else if (_strCompare(Cmd[0], "cd") == 0)
+    {
+        changeDirecHandler(Cmd, Cmd[1], "my_shell", 1);
+        _freeArr(Cmd);
+    }
+    else
+    {
+        log = executeCommands(Cmd, "my_shell", 1);
+    }
 }
+
 
 void pEnv(char **Cmd, short log)
 {
@@ -688,48 +694,4 @@ char *handleNewDirec(char **Cmd, char *direc, char *str, short Counter)
 char *handleOldDirec()
 {
   return (getcwd(NULL, 0));
-}
-
-
-void handleSetenv(char **Cmd)
-{
-	char *envVar, *envEntry;
-  if (Cmd[1] == NULL || Cmd[2] == NULL || Cmd[3] != NULL)
-  {
-    write(STDERR_FILENO, "Usage: setenv VARIABLE VALUE\n", 29);
-    return;
-  }
-
-  envVar = envHandler(Cmd[1], NULL, NULL);
-  
-  if (envVar != NULL)
-  {
-	  envEntry = _strCpNConcat(Cmd[1], Cmd[2]);
-
-	  putenv(envEntry);
-	  _freeMemo(envEntry, envVar);
-  }
-  else {
-
-  if (setenv(Cmd[1], Cmd[2], 1) != 0)
-  {
-    perror("setenv");
-  }
-}
-}
-
-
-
-void handleUnsetenv(char **Cmd)
-{
-  if (Cmd[1] == NULL || Cmd[2] != NULL)
-  {
-    write(STDERR_FILENO, "Usage: unsetenv VARIABLE\n", 26);
-    return;
-  }
-
-  if (unsetenv(Cmd[1]) != 0)
-  {
-    perror("unsetenv");
-  }
 }
