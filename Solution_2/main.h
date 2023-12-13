@@ -8,7 +8,7 @@
 #include <sys/wait.h>
 #include <stdio.h>
 #include <string.h>
-
+#include <limits.h>
 extern char **environ;
 
 #define BUFFER_SIZE 1024
@@ -25,11 +25,9 @@ void executeEnv(void);
 
 int isatty(int fd);
 
-<<<<<<< HEAD
-=======
-char *custom_getline(void);
+char *readLine(void);
+
 void executeExit(char** args);
->>>>>>> OM
 
 #endif
 
