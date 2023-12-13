@@ -11,7 +11,8 @@
 #define ST_STAT struct st
 #define DELIMITER " \t\n"
 extern char **environ;
-
+void setEnvHandler(char **Cmd, short log);
+void unsetEnvHandler(char **Cmd, short log);
 void replaceVariables(char **Cmd, int exitStatus);
 char *ReadData(const char *Message);
 
@@ -318,11 +319,22 @@ replaceVariables(Cmd, log);
     {
       changeDirecHandler(Cmd, Cmd[1], str, Counter);
       _freeArr(Cmd);
+    
     }
+    else if (_strCompare(Cmd[0], "setenv") == 0)
+{
+    setEnvHandler(Cmd, log);
+}
+else if (_strCompare(Cmd[0], "unsetenv") == 0)
+{
+    unsetEnvHandler(Cmd, log);
+}
     else
     {
       log = executeCommands(Cmd, str, Counter);
+    
     }
+   
   }
 }
 
@@ -685,3 +697,48 @@ void replaceVariables(char **Cmd, int exitStatus) {
     }
 }
 }
+
+void setEnvHandler(char **Cmd, short log)
+{
+	
+  if (Cmd[1] != NULL && Cmd[2] != NULL && Cmd[3] == NULL)
+  {
+    if (setenv(Cmd[1], Cmd[2], 1) != 0)
+    {
+      perror("setenv");
+      log = 1;
+    }
+  }
+  else
+  {
+    fprintf(stderr, "setenv: Incorrect syntax\n");
+    log = 1;
+  }
+
+  _freeArr(Cmd);
+    printf("success: %d\n", log);
+
+}
+
+void unsetEnvHandler(char **Cmd, short log)
+{
+
+  if (Cmd[1] != NULL && Cmd[2] == NULL)
+  {
+    if (unsetenv(Cmd[1]) != 0)
+    {
+      perror("unsetenv");
+      log = 1;
+    }
+  }
+  else
+  {
+    fprintf(stderr, "unsetenv: Incorrect syntax\n");
+    log = 1;
+  }
+
+  _freeArr(Cmd);
+    printf("success: %d\n", log);
+
+}
+
