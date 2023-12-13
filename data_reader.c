@@ -19,25 +19,31 @@ char *ReadData(const char *Message)
 
 	Length = getline(&Cmd, &sizeOfBuffer, stdin);
 
-	if (Length > 0 && Cmd[Length - 1] == '\n')
+	if (Length > 0)
+{
+	char *commentPos = strchr(Cmd, '#');
+	if (commentPos != NULL)
 	{
-	Cmd[Length - 1] = '\0';
-	}
-	else if (Length == -1)
-	{
-		if (isatty(STDIN_FILENO))
-		{
-		write(STDOUT_FILENO, "\n", 1);
-		free(Cmd);
-		onExit(NULL, log);
-		}
-		else
-		{
-		free(Cmd);
-		onExit(NULL, log);
-		}
+		*commentPos = '\0';
+		Length = commentPos - Cmd;
 	}
 
-	return (Cmd);
+	if (Cmd[Length - 1] == '\n')
+	{
+		Cmd[Length - 1] = '\0';
+	}
 }
+	else if (Length == -1)
+{
+	if (isatty(STDIN_FILENO))
+	{
+		write(STDOUT_FILENO, "\n", 1);
+	}
+	free(Cmd);
+	onExit(NULL, log);
+}
+
+	return Cmd;
+}
+
 
