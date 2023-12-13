@@ -12,6 +12,7 @@
 #define DELIMITER " \t\n"
 extern char **environ;
 
+void replaceVariables(char **Cmd, int exitStatus);
 char *ReadData(const char *Message);
 
 char **strParsing(char *data, char *dataContainer, char *token, char **Cmd);
@@ -303,10 +304,12 @@ void onTrigger(char *str, short Counter)
   Cmd = strParsing(userInput, NULL, NULL, NULL);
   if (Cmd && Cmd[0])
   {
+
+
     char exitFunc = _strCompare(Cmd[0], "exit");
     char envFunc = _strCompare(Cmd[0], "env");
     char cdFunc = _strCompare(Cmd[0], "cd");
-
+replaceVariables(Cmd, log);
     if (exitFunc == false || envFunc == false)
     {
       builtInHandler(Cmd, log);
@@ -653,4 +656,32 @@ char *handleOldDirec()
 {
   return (getcwd(NULL, 0));
 }
+void replaceVariables(char **Cmd, int exitStatus) {
+    int i;
+    char exitStatusStr[12];
+    char pidStr[12];
 
+	for (i = 0; Cmd[i] != NULL; i++) {
+        if (Cmd[i][0] == '$') {
+            if (strcmp(Cmd[i], "$?") == 0) {
+                
+               
+                snprintf(exitStatusStr, sizeof(exitStatusStr), "%d", exitStatus);
+                free(Cmd[i]);
+                Cmd[i] = _strDuplicate(exitStatusStr);
+            } else if (strcmp(Cmd[i], "$$") == 0) {
+                
+                
+                snprintf(pidStr, sizeof(pidStr), "%d", getpid());
+                free(Cmd[i]);
+                Cmd[i] = _strDuplicate(pidStr);
+            }
+	    else {
+		    char *envValue = getenv(Cmd[i] + 1);  
+                if (envValue != NULL) {
+                    free(Cmd[i]);
+                    Cmd[i] = _strDuplicate(envValue); }
+        }
+    }
+}
+}
