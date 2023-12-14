@@ -62,6 +62,7 @@
 * _perror - prints a similar error like shell
 * builtInHandler - compares and checks userInput command
 
+
 # Unused Functions
 
 ## Change Directory Handler (cd Command):
