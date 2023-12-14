@@ -13,31 +13,39 @@ char *ReadData(const char *Message)
 	int log = 0;
 
 	if (isatty(STDIN_FILENO))
-	{
-	write(STDOUT_FILENO, Message, strlen(Message));
-	}
+		write(STDOUT_FILENO, Message, strlen(Message));
 
 	Length = getline(&Cmd, &sizeOfBuffer, stdin);
 
-	if (Length > 0 && Cmd[Length - 1] == '\n')
+	if (Length > 0)
 	{
-	Cmd[Length - 1] = '\0';
+	char *commentPos = strchr(Cmd, '#');
+
+	if (commentPos != NULL)
+	{
+		*commentPos = '\0';
+		Length = commentPos - Cmd;
+	}
+	if (strstr(Cmd, "$$") != NULL)
+	{
+		fprintf(stderr, "%d\n", getpid());
+		free(Cmd);
+		return (NULL);
+	}
+	if (Cmd[Length - 1] == '\n')
+	{
+		Cmd[Length - 1] = '\0';
+	}
 	}
 	else if (Length == -1)
 	{
-		if (isatty(STDIN_FILENO))
-		{
+	if (isatty(STDIN_FILENO))
+	{
 		write(STDOUT_FILENO, "\n", 1);
-		free(Cmd);
-		onExit(NULL, log);
-		}
-		else
-		{
-		free(Cmd);
-		onExit(NULL, log);
-		}
 	}
-
+	free(Cmd);
+	onExit(NULL, log);
+}
 	return (Cmd);
 }
 
